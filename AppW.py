@@ -36,11 +36,11 @@ if not st.session_state["logged_in"]:
             # 👈 ضع الكود الجديد هنا مباشرة مع نفس محاذاة الأسطر (4 مسافات)
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     headers = st.context.headers
-                    user_ip = headers.get("X-Forwarded-For", "IP غير معروف")
-                    user_agent = headers.get("User-Agent", "Unknown Device")                    device_type = "📱 هاتف" if any(x in user_agent for x in ["Mobile", "Android", "iPhone"]) else "💻 كمبيوتر"
-            
-                    log_entry = f"الوقت: {now} | IP: {user_ip} | الجهاز: {user_agent}\n"                    with open("visitor_logs.txt", "a", encoding="utf-8") as f:
-                     with open("visitor_logs.txt", "a", encoding="utf-8") as f:
+                    user_ip = headers.get("X-Forwarded-For", "Unknown IP")
+                    user_agent = headers.get("User-Agent", "Unknown Device")                       
+
+                    log_entry = f"الوقت: {now} | IP: {user_ip} | الجهاز: {user_agent}\n"                                      
+                    with open("visitor_logs.txt", "a", encoding="utf-8") as f:
                         f.write(log_entry)
 
                     st.success("تم تسجيل الدخول بنجاح")
