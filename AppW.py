@@ -3,19 +3,51 @@ import pandas as pd
 
 # 1. إعدادات الصفحة
 st.set_page_config(
-    page_title="Smart Archive - Modèle Physique", 
-    page_icon="📁", 
+    page_title="Smart Archive - Modèle Physique",
+    page_icon="📁",
     layout="wide"
 )
 
-st.markdown("<h1 style='text-align: center; color: #1E3A8A;'>📁 Smart Archive - Modèle Physique de Données</h1>", unsafe_allow_html=True)
+# ---------------------------------------------------------
+# إدارة حالة تسجيل الدخول (Session State)
+# ---------------------------------------------------------
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False  # القيمة الافتراضية غير مسجل الدخول
 
-# 2. القائمة الجانبية
+# ---------------------------------------------------------
+# الشاشة الأولى: نموذج تسجيل الدخول (إذا لم يسجل الدخول بعد)
+# ---------------------------------------------------------
+if not st.session_state["logged_in"]:
+    st.markdown("<h2 style='text-align: center;'>🔐 تسجيل الدخول إلى النظام</h2>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        with st.form("login_form"):
+            username = st.text_input("اسم المستخدم (Nom d'utilisateur)")
+            password = st.text_input("كلمة المرور (Mot de passe)", type="password")
+            submit = st.form_submit_button("دخول (Se connecter)")
+            
+            if submit:
+                # يمكنك وضع اسم المستخدم وكلمة المرور التجريبية هنا
+                if username == "admin" and password == "1234":
+                    st.session_state["logged_in"] = True
+                    st.success("تم تسجيل الدخول بنجاح!")
+                    st.rerun()
+                else:
+                    st.error("اسم المستخدم أو كلمة المرور غير صحيحة")
+    st.stop()  # يمنع إكمال بقية الكود قبل تسجيل الدخول
+
+# ---------------------------------------------------------
+# الشاشة الرئيسية التطبيق (تظهر فقط بعد تسجيل الدخول)
+# ---------------------------------------------------------
+st.markdown("<h1 style='text-align: center; color: #1E3A8A;'> Smart Archive </h1>", unsafe_allow_html=True)
+
+# القائمة الجانبية
 st.sidebar.title("📌 القائمة الرئيسية")
 st.sidebar.markdown("---")
 
 menu = st.sidebar.radio("اختر الشاشة المراد عرضها:", [
-    "🌐 Schéma des Relations (Diagramme)", 
+    "🌐 Schéma des Relations (Diagramme)",
     "📊 Structure des tables"
 ])
 
@@ -24,10 +56,12 @@ st.sidebar.markdown("---")
 if st.sidebar.button("🔄 Actualiser البيانات"):
     st.toast("تم تحديث الواجهة بنجاح!", icon="🎉")
 
-if st.sidebar.button("🚪 Déconnexion"):
+# زر الخروج المنفذ بشكل صحيح
+if st.sidebar.button("⏹ Déconnexion"):
     st.session_state.clear()
-    st.success("تم تسجيل الخروج بنجاح!")
+    st.session_state["logged_in"] = False
     st.rerun()
+
 
 # ==========================================
 # الشاشة الأولى: المخطط الرأسي (Graphviz)
