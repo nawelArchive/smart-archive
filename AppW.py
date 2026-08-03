@@ -303,20 +303,21 @@ elif menu == "📊 Structure des tables":
     df = pd.DataFrame(data_dict.get(selected_table, []))
     st.dataframe(df)
 
-    with st.sidebar:
-        st.markdown("---")
-        if st.checkbox("📋 عرض سجل الزوار"):
-            st.subheader("سجل الدخول:")
-            try:
-                with open("visitor_logs.txt", "r", encoding="utf-8") as f:
-                    logs = f.readlines()
-                    if logs:
-                        for log in reversed(logs):
-                            st.write(log.strip())
-                    else:
-                        st.info("الملف فارغ، لا توجد تسجيلات بعد.")
-            except FileNotFoundError:
-                st.info("لا يوجد سجل زوار بعد. قم بتسجيل الدخول أولاً ليتم إنشاء الملف.")
+    st.sidebar.title("سجل الزوار")
+
+# زر لمسح ملف السجل بضغطة واحدة
+    if st.sidebar.button("🗑️ مسح سجل الزوار"):
+         open("visitor_logs.txt", "w", encoding="utf-8").close()
+         st.sidebar.success("تم مسح السجل بنجاح!")
+         st.rerun()
+
+# عرض محتوى السجل
+    try:
+        with open("visitor_logs.txt", "r", encoding="utf-8") as f:
+            logs = f.read()
+            st.sidebar.text_area("تفاصيل الزوار:", value=logs, height=300)
+    except FileNotFoundError:
+        st.sidebar.write("السجل فارغ حالياً.")
 
 
 
