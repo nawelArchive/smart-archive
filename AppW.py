@@ -37,9 +37,38 @@ if not st.session_state["logged_in"]:
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     headers = st.context.headers
                     user_ip = headers.get("X-Forwarded-For", "Unknown IP")
-                    user_agent = headers.get("User-Agent", "Unknown Device")                       
+                    ua = headers.get("User-Agent", "")
+            
+            # تحديد نوع الجهاز/النظام
+                    if "Android" in ua:
+                        os_name = "الهاتف (Android)"
+                    elif "iPhone" in ua:
+                        os_name = "الهاتف (iPhone)"
+                    elif "Windows" in ua:
+                        os_name = "كمبيوتر (Windows)"
+                    elif "Macintosh" in ua:
+                        os_name = "كمبيوتر (Mac)"
+                    elif "Linux" in ua:
+                        os_name = "كمبيوتر (Linux)"
+                    else:
+                        os_name = "جهاز غير معروف"
 
-                    log_entry = f"الوقت: {now} | IP: {user_ip} | الجهاز: {user_agent}\n"                                      
+            # تحديد نوع المتصفح
+                    if "Firefox" in ua:
+                        browser = "Firefox"
+                    elif "Edg" in ua:
+                     browser = "Edge"
+                    elif "Chrome" in ua:
+                      browser = "Chrome"
+                    elif "Safari" in ua:
+                      browser = "Safari"
+                    else:
+                      browser = "متصفح آخر"
+
+                    device_info = f"{os_name} - {browser}"
+                    log_entry = f"الوقت: {now} | IP: {user_ip} | الجهاز: {device_info}\n"
+
+
                     with open("visitor_logs.txt", "a", encoding="utf-8") as f:
                         f.write(log_entry)
 
