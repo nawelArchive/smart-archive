@@ -25,7 +25,13 @@ if not st.session_state["logged_in"]:
         with st.form("login_form"):
             username = st.text_input("اسم المستخدم (Nom d'utilisateur)")
             password = st.text_input("كلمة المرور (Mot de passe)", type="password")
-           
+            submit = st.form_submit_button("دخول (Se connecter)")
+                        
+            if submit:
+                            # يمكنك وضع اسم المستخدم وكلمة المرور التجريبية هنا
+                if username == "admin" and password == "1234":
+                    st.session_state["logged_in"] = True
+            
             
             # 👈 ضع الكود الجديد هنا مباشرة مع نفس محاذاة الأسطر (4 مسافات)
                     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
