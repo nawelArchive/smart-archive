@@ -32,25 +32,18 @@ if not st.session_state["logged_in"]:
                 if username == "admin" and password == "1234":
                     st.session_state["logged_in"] = True
 
-                    if username == "admin" and password == "1234":
-                        st.session_state["logged_in"] = True
             
             # 👈 ضع الكود الجديد هنا مباشرة مع نفس محاذاة الأسطر (4 مسافات)
-                        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        headers = st.context.headers
-                        user_ip = headers.get("X-Forwarded-For", "IP غير معروف")
-                        user_agent = headers.get("User-Agent", "جهاز غير معروف")
-                        device_type = "📱 هاتف" if any(x in user_agent for x in ["Mobile", "Android", "iPhone"]) else "💻 كمبيوتر"
+                    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    headers = st.context.headers
+                    user_ip = headers.get("X-Forwarded-For", "IP غير معروف")
+                    user_agent = headers.get("User-Agent", "Unknown Device")                    device_type = "📱 هاتف" if any(x in user_agent for x in ["Mobile", "Android", "iPhone"]) else "💻 كمبيوتر"
             
-                        log_entry = f"الوقت: {now} | الجهاز: {device_type} | الـ IP: {user_ip}\n"
-                        with open("visitor_logs.txt", "a", encoding="utf-8") as f:
-                            f.write(log_entry)
+                    log_entry = f"الوقت: {now} | IP: {user_ip} | الجهاز: {user_agent}\n"                    with open("visitor_logs.txt", "a", encoding="utf-8") as f:
+                     with open("visitor_logs.txt", "a", encoding="utf-8") as f:
+                        f.write(log_entry)
 
-                        st.success("تم تسجيل الدخول بنجاح")
-                        st.rerun()
-
-
-                    st.success("تم تسجيل الدخول بنجاح!")
+                    st.success("تم تسجيل الدخول بنجاح")
                     st.rerun()
                 else:
                     st.error("اسم المستخدم أو كلمة المرور غير صحيحة")
